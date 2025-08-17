@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 71" width="96" height="71">
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="M10.25 0.5L83.47 0.5L83.47 19.5L10.25 19.5L10.25 0.5Z" />
+		</clipPath>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #ffffff } 
+		.shp1 { fill: #b8dce8 } 
+		.shp2 { fill: #4d5353 } 
+		.shp3 { opacity: 0.4;fill: #ffffff } 
+		.shp4 { fill: #424e4a } 
+		.shp5 { fill: #bbbbbb } 
+	</style>
+	<g id="Layer">
+		<g id="Layer">
+			<g id="Layer">
+				<g id="Layer">
+					<path id="Layer" fill-rule="evenodd" class="shp0" d="M8 57.5L89 57.5L89 16.5L8 16.5L8 57.5Z" />
+					<path id="Layer" fill-rule="evenodd" class="shp1" d="M63 22.5L86 22.5L86 51.5L63 51.5L63 22.5ZM11 22.5L34 22.5L34 51.5L11 51.5L11 22.5Z" />
+					<path id="Layer" fill-rule="evenodd" class="shp2" d="M38 55.5L59 55.5L59 22.5L38 22.5L38 55.5Z" />
+					<path id="Layer" fill-rule="evenodd" class="shp3" d="M82 28.5L82 31.5L67 45.5L67 42.5L82 28.5ZM74 43.5L82 35.5L82 38.5L74 46.5L74 43.5ZM76 30.5L68 38.5L68 35.5L76 27.5L76 30.5ZM15 42.5L30 28.5L30 31.5L15 45.5L15 42.5ZM22 43.5L30 35.5L30 38.5L22 46.5L22 43.5ZM24 30.5L16 38.5L16 35.5L24 27.5L24 30.5Z" />
+					<path id="Layer" fill-rule="evenodd" class="shp0" d="M49 52.5L56 52.5L56 40.51L49 40.51L49 52.5ZM41 52.5L48.01 52.5L48.01 40.51L41 40.51L41 52.5ZM41 38.49L56 38.49L56 25.5L41 25.5L41 38.49Z" />
+					<path id="Layer" fill-rule="evenodd" class="shp4" d="M0 69.5L98 69.5L98 63.5L0 63.5L0 69.5Z" />
+					<path id="Layer" fill-rule="evenodd" class="shp5" d="M8 57.5L0 63.5L98 63.5L89 57.5L8 57.5Z" />
+					<g id="Layer">
+						<g id="Layer">
+							<g id="Clip-Path" clip-path="url(#cp1)">
+								<path id="Layer" fill-rule="evenodd" class="shp5" d="M80.46 19.5C77.97 19.5 77 17.98 77 15.5L67 0.5L74 0.5L82.9 14.77C84.31 17.94 82.95 19.5 80.46 19.5ZM60 0.5L68 15.5C68 17.98 66.65 19.5 64.17 19.5C61.68 19.5 61.48 17.13 60.88 14.71L54 0.5L60 0.5ZM19 0.5L25 0.5L18 15C18 17.48 16.48 19.62 14 19.5C10.85 19.34 9.19 17.72 11 15L19 0.5ZM32 0.5L36 0.5L35 14.5C35 16.98 33.48 19.5 31 19.5C28.52 19.5 25.91 17.16 27 14.5L32 0.5ZM43 0.5L47 0.5L52.33 16.13C52.33 18.61 50.65 19.5 48.17 19.5C45.68 19.5 44 16.98 44 14.5L43 0.5L43 0.5Z" />
+							</g>
+						</g>
+						<path id="Layer" fill-rule="evenodd" class="shp2" d="M92 15C92 17.48 89.98 19.5 87.5 19.5C85.02 19.5 84 17.5 83 15L74 0.5L81 0.5L92 15ZM77 15.5C78.35 19.21 74.98 19.5 72.5 19.5C70.02 19.5 68.53 17.79 67.88 15.29L60 0.5L67 0.5L77 15.5ZM60.88 14.71C61.67 18.96 58.65 19.5 56.17 19.5C53.68 19.5 52.5 17.58 52 15L47 0.5L54 0.5L60.88 14.71ZM19 0.5L11 15C9.91 17.47 8.98 19.5 6.5 19.5C4.02 19.5 2 17.48 2 15L12 0.5L19 0.5ZM25 0.5L32 0.5L27 15C26.3 17.42 24.98 19.5 22.5 19.5C20.02 19.5 16.88 17.5 18 15L25 0.5ZM43 0.5L44 15C44 17.48 41.98 19.5 39.5 19.5C37.02 19.5 35 17.48 35 15L36 0.5L43 0.5Z" />
+					</g>
+				</g>
+				<g id="Layer">
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>
