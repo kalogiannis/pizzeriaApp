@@ -1,7 +1,7 @@
 
 
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Plus, Minus, ShoppingCart } from 'lucide-react';
 import {
   Dialog,
@@ -14,7 +14,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import type { Product, Size, Extra, CartItem } from '../types'; // Use type-only imports
+import type { Product, Size, Extra, CartItem } from '../types';
 
 interface AddToCartPopupProps {
   isOpen: boolean;
@@ -38,15 +38,6 @@ const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedSize, setSelectedSize] = useState<string>('medium');
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
-
-  // Reset state when product changes or popup opens
-  useEffect(() => {
-    if (isOpen && product) {
-      setQuantity(1);
-      setSelectedSize('medium');
-      setSelectedExtras([]);
-    }
-  }, [isOpen, product]);
 
   const sizes: Size[] = [
     { id: 'small', name: 'Μικό', price: 0 },
@@ -95,7 +86,7 @@ const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
       extras: selectedExtras,
       quantity: quantity,
       totalPrice: calculateTotalPrice(),
-      image: product.image // Include the image here
+      image: product.image
     };
 
     if (onAddToCart) {
@@ -115,7 +106,6 @@ const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Product Info */}
           <Card>
             <CardContent className="p-4">
               <div className="flex gap-4">
@@ -133,7 +123,6 @@ const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
             </CardContent>
           </Card>
 
-          {/* Size Selection */}
           <div className="space-y-3">
             <Label className="text-base font-medium">Μέγεθος</Label>
             <RadioGroup value={selectedSize} onValueChange={setSelectedSize}>
@@ -151,7 +140,6 @@ const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
             </RadioGroup>
           </div>
 
-          {/* Extras */}
           <div className="space-y-3">
             <Label className="text-base font-medium">Επιπλέον υλικά</Label>
             <div className="space-y-3">
@@ -171,7 +159,6 @@ const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
             </div>
           </div>
 
-          {/* Quantity */}
           <div className="space-y-3">
             <Label className="text-base font-medium">Ποσότητα</Label>
             <div className="flex items-center gap-3">
@@ -196,7 +183,6 @@ const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
             </div>
           </div>
 
-          {/* Add to Cart Button */}
           <Button
             onClick={handleAddToCart}
             className="w-full"

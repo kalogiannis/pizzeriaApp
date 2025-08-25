@@ -1,4 +1,5 @@
 
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react';
@@ -14,32 +15,32 @@ interface MenuSideBarProps {
   onNavigateToCart?: () => void;
 }
 
-const MenuSideBar: React.FC<MenuSideBarProps> = ({ 
-  onAddToCart, 
-  searchQuery = '', 
+const MenuSideBar: React.FC<MenuSideBarProps> = ({
+  onAddToCart,
+  searchQuery = '',
   cartItems = [],
-  onNavigateToCart 
+  onNavigateToCart
 }) => {
   const [activeTab, setActiveTab] = useState<MenuCategory>("Προσφορές");
 
   const getCurrentItems = (): MenuItem[] => {
     let items = menuData[activeTab] || [];
-    
+
     // Filter items based on search query
     if (searchQuery.trim()) {
-      items = items.filter(item => 
+      items = items.filter(item =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-    
+
     return items;
   };
 
   const getCategoryIcon = (category: MenuCategory): string => {
     const icons: Record<MenuCategory, string> = {
       "Προσφορές": "🎯",
-      "Πίτσες": "🍕", 
+      "Πίτσες": "🍕",
       "Σαλάτες": "🥗",
       "Burgers": "🍔",
       "Παγωτά": "🍦",
@@ -57,9 +58,29 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
   const currentItems = getCurrentItems();
 
   return (
-    <div className="flex h-full bg-gray-50">
-      {/* Sidebar */}
-      <div className="w-64 bg-white shadow-lg">
+    <div className="flex flex-col md:flex-row h-full bg-gray-50">
+      {/* Mobile Category Navigation (visible on small screens) */}
+      <div className="md:hidden w-full bg-white shadow-lg p-4 overflow-x-auto whitespace-nowrap">
+        <div className="flex space-x-2">
+          {pizzeriaList.map((category: MenuCategory, index: number) => (
+            <button
+              key={`${category}-${index}`}
+              onClick={() => setActiveTab(category)}
+              className={`flex-shrink-0 px-4 py-2 rounded-full transition-colors duration-200 ${
+                activeTab === category
+                  ? 'bg-green-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              <span className="text-sm mr-1">{getCategoryIcon(category)}</span>
+              <span className="font-medium text-sm">{category}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop Sidebar (visible on medium and larger screens) */}
+      <div className="hidden md:block w-64 bg-white shadow-lg">
         <div className="p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold text-gray-800">Menu</h2>
@@ -106,11 +127,11 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
               </p>
             )}
           </div>
-          
+
           {currentItems.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-500 text-lg">
-                {searchQuery 
+                {searchQuery
                   ? `Δεν βρέθηκαν προϊόντα για "${searchQuery}"`
                   : 'Δεν υπάρχουν προϊόντα σε αυτή την κατηγορία'
                 }
@@ -122,9 +143,9 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
                 <div key={item.id} className="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4">
                   {/* Item Image */}
                   <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-pink-500 rounded-lg flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
-                    {item.name.charAt(0)}
+                    <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-lg" />
                   </div>
-                  
+
                   {/* Item Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between">
@@ -142,13 +163,13 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
                         </p>
                       </div>
                     </div>
-                    
+
                     {/* Price and Action */}
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-bold text-gray-800">
                         {item.price}
                       </span>
-                      <Button 
+                      <Button
                         className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm"
                         onClick={() => onAddToCart(item)}
                       >
@@ -167,4 +188,3 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
 };
 
 export default MenuSideBar;
-

@@ -1,7 +1,8 @@
 
+
 import React from 'react';
 import ShoppingCartPage from './ShoppingCartPage';
-import { useCart } from '@/contexts/CartContext';
+import { useCart } from '../contexts/useCart'; // Updated import path
 
 const ShoppingCartPageWrapper: React.FC = () => {
   const { state, updateQuantity, removeItem, clearCart } = useCart();

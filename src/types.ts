@@ -1,6 +1,23 @@
 
 
-export interface Product {
+export type User = {
+  _id: string;
+  email: string;
+  name: string;
+  addressLine1: string;
+  city: string;
+  country: string;
+};
+
+// New MenuItem type from the provided repository
+export type MenuItem = {
+  _id: string;
+  name: string;
+  price: number;
+};
+
+// Existing Product type, renamed to avoid conflict with new MenuItem
+export interface ProductForPopup {
   id: number;
   name: string;
   description: string;
@@ -10,6 +27,66 @@ export interface Product {
   available?: boolean;
 }
 
+export type Restaurant = {
+  _id: string;
+  user: string;
+  restaurantName: string;
+  city: string;
+  country: string;
+  deliveryPrice: number;
+  estimatedDeliveryTime: number;
+  cuisines: string[];
+  menuItems: MenuItem[];
+  imageUrl: string;
+  lastUpdated: string;
+};
+
+export type OrderStatus =
+  | "placed"
+  | "paid"
+  | "inProgress"
+  | "outForDelivery"
+  | "delivered";
+
+export type Order = {
+  _id: string;
+  restaurant: Restaurant;
+  user: User;
+  cartItems: {
+    menuItemId: string;
+    name: string;
+    quantity: string;
+  }[];
+  deliveryDetails: {
+    name: string;
+    addressLine1: string;
+    city: string;
+    email: string;
+  };
+  totalAmount: number;
+  status: OrderStatus;
+  createdAt: string;
+  restaurantId: string;
+};
+
+export type RestaurantSearchResponse = {
+  data: Restaurant[];
+  pagination: {
+    total: number;
+    page: number;
+    pages: number;
+  };
+};
+
+// New CartItem type from the provided repository
+export type CartItem = {
+  _id: string;
+  name: string;
+  price: number;
+  quantity: number;
+};
+
+// Existing types, adjusted or kept as is
 export interface Size {
   id: string;
   name: string;
@@ -23,53 +100,32 @@ export interface Extra {
   category?: string;
 }
 
-export interface CartItem {
-  productId: number;
-  name: string;
-  size: string;
-  extras: string[];
-  quantity: number;
-  totalPrice: number;
-  image: string;
-  addedAt?: Date;
-}
-
-export interface MenuItem {
-  id: number;
-  name: string;
-  description: string;
-  price: string; // Keeping as string as per original content
-  badge?: string;
-  image?: string; // Added image for consistency with popup
-}
-
-
 export interface AddToCartPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  product?: Product;
+  product?: ProductForPopup;
   onAddToCart?: (item: CartItem) => void;
   sizes?: Size[];
   extras?: Extra[];
 }
 
 export interface MenuSideBarProps {
-  onAddToCart?: (product: Product) => void;
+  onAddToCart?: (product: ProductForPopup) => void;
   className?: string;
-  products?: Product[];
+  products?: ProductForPopup[];
   loading?: boolean;
 }
 
 export interface MenuPageProps {
-  initialProducts?: Product[];
+  initialProducts?: ProductForPopup[];
   onCartUpdate?: (items: CartItem[]) => void;
 }
 
-// Utility types
+// Utility types for the new cart logic
 export type CartAction = 
   | { type: 'ADD_ITEM'; payload: CartItem }
-  | { type: 'REMOVE_ITEM'; payload: number }
-  | { type: 'UPDATE_QUANTITY'; payload: { id: number; quantity: number } }
+  | { type: 'REMOVE_ITEM'; payload: string }
+  | { type: 'UPDATE_QUANTITY'; payload: { _id: string; quantity: number } }
   | { type: 'CLEAR_CART' };
 
 export interface CartState {
@@ -77,3 +133,5 @@ export interface CartState {
   total: number;
   itemCount: number;
 }
+
+

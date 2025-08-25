@@ -1,3 +1,5 @@
+
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -8,9 +10,7 @@ import { Button } from "./ui/button";
 import { useEffect } from "react";
 
 const formSchema = z.object({
-  searchQuery: z.string({
-    required_error: "Restaurant name is required",
-  }),
+  searchQuery: z.string().min(1, "Restaurant name is required"),
 });
 
 export type SearchForm = z.infer<typeof formSchema>;
@@ -55,7 +55,7 @@ const SearchBar = ({ onSubmit, onReset, placeHolder, searchQuery }: Props) => {
         <Search
           strokeWidth={2.5}
           size={30}
-          className="ml-1 text-orange-500 hidden md:block"
+          className="ml-1 text-green-600 hidden md:block"
         />
         <FormField
           control={form.control}
@@ -81,7 +81,7 @@ const SearchBar = ({ onSubmit, onReset, placeHolder, searchQuery }: Props) => {
         >
           Reset
         </Button>
-        <Button type="submit" className="rounded-full bg-orange-500">
+        <Button type="submit" className="rounded-full bg-blue-500">
           Search
         </Button>
       </form>
