@@ -1,124 +1,99 @@
 
-
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { CartContext } from './cart-context-definition';
 import type { CartItem } from '../types';
-import { CartContext ,type CartContextType} from './cart-context-types'; 
 
-// Define cart actions
-type CartAction =
-  | { type: 'ADD_ITEM'; payload: CartItem }
-  | { type: 'UPDATE_QUANTITY'; payload: { productId: number; size: string; extras: string[]; quantity: number } }
-  | { type: 'REMOVE_ITEM'; payload: { productId: number; size: string; extras: string[] } }
-  | { type: 'CLEAR_CART' };
-
-// Define cart state
-interface CartState {
-  items: CartItem[];
+interface CartProviderProps {
+  children: ReactNode;
 }
 
-// Cart reducer
+interface CartState {
+  cartItems: CartItem[];
+}
+
+type CartAction = 
+  | { type: 'ADD_ITEM'; payload: CartItem }
+  | { type: 'REMOVE_ITEM'; payload: string }
+  | { type: 'UPDATE_QUANTITY'; payload: { _id: string; quantity: number } }
+  | { type: 'CLEAR_CART' };
+
 const cartReducer = (state: CartState, action: CartAction): CartState => {
   switch (action.type) {
     case 'ADD_ITEM': {
-      const existingItemIndex = state.items.findIndex(
-        item =>
-          item.productId === action.payload.productId &&
-          item.size === action.payload.size &&
-          JSON.stringify(item.extras.sort()) === JSON.stringify(action.payload.extras.sort())
-      );
-
-      if (existingItemIndex !== -1) {
-        const updatedItems = [...state.items];
-        updatedItems[existingItemIndex] = {
-          ...updatedItems[existingItemIndex],
-          quantity: updatedItems[existingItemIndex].quantity + action.payload.quantity,
-          totalPrice: updatedItems[existingItemIndex].totalPrice + action.payload.totalPrice
+      const existingItem = state.cartItems.find(item => item._id === action.payload._id);
+      if (existingItem) {
+        return {
+          ...state,
+          cartItems: state.cartItems.map(item =>
+            item._id === action.payload._id
+              ? { ...item, quantity: item.quantity + action.payload.quantity }
+              : item
+          ),
         };
-        return { ...state, items: updatedItems };
       } else {
-        return { ...state, items: [...state.items, action.payload] };
+        return {
+          ...state,
+          cartItems: [...state.cartItems, action.payload],
+        };
       }
     }
-
+    case 'REMOVE_ITEM':
+      return {
+        ...state,
+        cartItems: state.cartItems.filter(item => item._id !== action.payload),
+      };
     case 'UPDATE_QUANTITY': {
-      const updatedItems = state.items.map(item => {
-        if (item.productId === action.payload.productId &&
-            item.size === action.payload.size &&
-            JSON.stringify(item.extras.sort()) === JSON.stringify(item.extras.sort())) {
-          const pricePerItem = item.totalPrice / item.quantity;
-          return {
-            ...item,
-            quantity: action.payload.quantity,
-            totalPrice: pricePerItem * action.payload.quantity
-          };
-        }
-        return item;
-      });
-      return { ...state, items: updatedItems };
+      return {
+        ...state,
+        cartItems: state.cartItems.map(item =>
+          item._id === action.payload._id
+            ? { ...item, quantity: action.payload.quantity }
+            : item
+        ),
+      };
     }
-
-    case 'REMOVE_ITEM': {
-      const filteredItems = state.items.filter(item =>
-        !(item.productId === action.payload.productId &&
-          item.size === action.payload.size &&
-          JSON.stringify(item.extras.sort()) === JSON.stringify(item.extras.sort()))
-      );
-      return { ...state, items: filteredItems };
-    }
-
     case 'CLEAR_CART':
-      return { ...state, items: [] };
-
+      return { cartItems: [] };
     default:
       return state;
   }
 };
 
-// Cart provider component
-interface CartProviderProps {
-  children: ReactNode;
-}
-
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [state, dispatch] = useReducer(cartReducer, { items: [] });
+  const [state, dispatch] = useReducer(cartReducer, { cartItems: [] }, (initialState) => {
+    const storedCartItems = sessionStorage.getItem('cartItems');
+    return storedCartItems ? { cartItems: JSON.parse(storedCartItems) } : initialState;
+  });
 
-  const addItem = (item: CartItem) => {
+  useEffect(() => {
+    sessionStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+  }, [state.cartItems]);
+
+  const addToCart = (item: CartItem) => {
     dispatch({ type: 'ADD_ITEM', payload: item });
   };
 
-  const updateQuantity = (productId: number, size: string, extras: string[], quantity: number) => {
-    dispatch({ type: 'UPDATE_QUANTITY', payload: { productId, size, extras, quantity } });
-  };
-
-  const removeItem = (productId: number, size: string, extras: string[]) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: { productId, size, extras } });
+  const removeFromCart = (_id: string) => {
+    dispatch({ type: 'REMOVE_ITEM', payload: _id });
   };
 
   const clearCart = () => {
     dispatch({ type: 'CLEAR_CART' });
   };
 
-  const getTotalItems = (): number => {
-    return state.items.reduce((total, item) => total + item.quantity, 0);
-  };
-
-  const getTotalValue = (): number => {
-    return state.items.reduce((total, item) => total + item.totalPrice, 0);
-  };
-
-  const value: CartContextType = {
-    state,
-    addItem,
-    updateQuantity,
-    removeItem,
-    clearCart,
-    getTotalItems,
-    getTotalValue
-  };
+  const totalAmount = state.cartItems.reduce((total: number, item: CartItem) => total + item.price * item.quantity, 0);
 
   return (
-    <CartContext.Provider value={value}>
+    <CartContext.Provider
+      value={{
+        cartItems: state.cartItems,
+        addToCart,
+        removeFromCart,
+        clearCart,
+        totalAmount,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

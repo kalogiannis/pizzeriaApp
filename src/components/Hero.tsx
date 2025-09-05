@@ -9,23 +9,18 @@ const Hero = () => {
   return (
     <section
       className="relative w-full"
-      // Use a fixed responsive height for the whole hero so centering is predictable
-      // Adjust the heights to your taste
+  
       style={{ minHeight: "320px" }}
     >
-      {/* Container that defines height responsively */}
       <div className="relative w-full h-[320px] sm:h-[420px] md:h-[480px] lg:h-[600px] overflow-hidden">
-        {/* Background image fills the whole container */}
         <img
           src={hero}
           alt="Pizzalicious hero"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
 
-        {/* Gradient overlay to improve contrast */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-transparent" />
 
-        {/* Centered text block (both vertically & horizontally) */}
         <div className="absolute inset-0 z-10 flex items-center justify-center">
           <div className="max-w-3xl px-4 text-center text-white">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight">

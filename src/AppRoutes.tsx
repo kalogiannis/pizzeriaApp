@@ -7,49 +7,51 @@ import AuthCallbackPage from "./pages/AuthCallbackPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import MenuPage from "./pages/MenuPage";
-import ShoppingCartPageWrapper from "./pages/ShoppingCartPageWrapper";
+import ShoppingCartPage from "./pages/ShoppingCartPage";
+import { CartProvider } from "./contexts/CartContext";
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <Layout showHero>
-            <HomePage />
-          </Layout>
-        }
-      />
-      <Route
-        path="/menu"
-        element={
-          <Layout>
-            <MenuPage />
-          </Layout>
-        }
-      />
-      <Route
-        path="/menu/shoppingCart"
-        element={
-          <Layout>
-            <ShoppingCartPageWrapper />
-          </Layout>
-        }
-      />
-      <Route path="/auth-callback" element={<AuthCallbackPage />} />
-      <Route element={<ProtectedRoute />}>
+    <CartProvider>
+      <Routes>
         <Route
-          path="/user-profile"
+          path="/"
           element={
-            <Layout>
-              <UserProfilePage />
+            <Layout showHero>
+              <HomePage />
             </Layout>
           }
         />
-      
-      </Route>
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+        <Route
+          path="/menu"
+          element={
+            <Layout>
+              <MenuPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <Layout>
+              <ShoppingCartPage />
+            </Layout>
+          }
+        />
+        <Route path="/auth-callback" element={<AuthCallbackPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/user-profile"
+            element={
+              <Layout>
+                <UserProfilePage />
+              </Layout>
+            }
+          />
+        </Route>
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </CartProvider>
   );
 };
 
