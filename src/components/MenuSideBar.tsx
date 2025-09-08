@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react'; 
 import { menuData } from '../data/menuData';
 import type { MenuCategory } from '../data/menuData';
 import { pizzeriaList } from '../constants/pizzeriaList';
@@ -18,15 +18,14 @@ interface MenuSideBarProps {
 const MenuSideBar: React.FC<MenuSideBarProps> = ({
   onAddToCart,
   searchQuery = '',
-  onNavigateToCart
+  onNavigateToCart // Now used
 }) => {
   const [activeTab, setActiveTab] = useState<MenuCategory>("Προσφορές");
-  const { cartItems } = useCart(); // Use cartItems from the new context
+  const { cartItems } = useCart();
 
   const getCurrentItems = (): LocalMenuItem[] => {
     let items = menuData[activeTab] || [];
 
-    // Filter items based on search query
     if (searchQuery.trim()) {
       items = items.filter(item =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -51,7 +50,7 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
     return icons[category] || "📋";
   };
 
-  const getTotalCartItems = (): number => {
+  const getTotalCartItems = (): number => { // Now used
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
@@ -59,7 +58,7 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
 
   return (
     <div className="flex flex-col md:flex-row h-full bg-gray-50">
-      {/* Mobile Category Navigation (visible on small screens) */}
+      {/* Mobile Category Navigation */}
       <div className="md:hidden w-full bg-white shadow-lg p-4 overflow-x-auto whitespace-nowrap">
         <div className="flex space-x-2">
           {pizzeriaList.map((category: MenuCategory, index: number) => (
@@ -79,11 +78,23 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
         </div>
       </div>
 
-      {/* Desktop Sidebar (visible on medium and larger screens) */}
+      {/* Desktop Sidebar */}
       <div className="hidden md:block w-64 bg-white shadow-lg">
         <div className="p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold text-gray-800">Menu</h2>
+            {/* --- FIX: Restored Shopping Cart Icon --- */}
+            <button
+              onClick={onNavigateToCart}
+              className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <ShoppingCart size={24} className="text-gray-700" />
+              {getTotalCartItems() > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold">
+                  {getTotalCartItems()}
+                </span>
+              )}
+            </button>
           </div>
           <nav className="space-y-2">
             {pizzeriaList.map((category: MenuCategory, index: number) => (
@@ -129,12 +140,9 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {currentItems.map((item: LocalMenuItem) => (
                 <div key={item.id} className="bg-white rounded-lg shadow-md p-6 flex items-center space-x-4">
-                  {/* Item Image */}
                   <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-pink-500 rounded-lg flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
                     <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-lg" />
                   </div>
-
-                  {/* Item Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between">
                       <div className="flex-1 min-w-0">
@@ -151,8 +159,6 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
                         </p>
                       </div>
                     </div>
-
-                    {/* Price and Action */}
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-bold text-gray-800">
                         {item.price}

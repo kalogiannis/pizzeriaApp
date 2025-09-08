@@ -14,13 +14,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import type { Product, Size, Extra, CartItem } from '../types';
+import type { ProductForPopup, Size, Extra, CartItem } from '../types';
 
 interface AddToCartPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  product?: Product;
+  product?: ProductForPopup; // Changed from Product to ProductForPopup
   onAddToCart?: (item: CartItem) => void;
+  sizes?: Size[];
+  extras?: Extra[];
 }
 
 const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
@@ -40,7 +42,7 @@ const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
 
   const sizes: Size[] = [
-    { id: 'small', name: 'Μικό', price: 0 },
+    { id: 'small', name: 'Μικρό', price: 0 },
     { id: 'medium', name: 'Μεσαίο', price: 2.50 },
     { id: 'large', name: 'Μεγάλο', price: 5.00 }
   ];
@@ -80,13 +82,14 @@ const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
 
   const handleAddToCart = (): void => {
     const cartItem: CartItem = {
-      productId: product.id,
+      _id: product.id.toString(), // Convert number id to string _id
       name: product.name,
+      price: product.price, // Base price from product
+      quantity: quantity,
+      image: product.image,
       size: selectedSize,
       extras: selectedExtras,
-      quantity: quantity,
       totalPrice: calculateTotalPrice(),
-      image: product.image
     };
 
     if (onAddToCart) {
