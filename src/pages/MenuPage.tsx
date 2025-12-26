@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MenuSideBar from '@/components/MenuSideBar';
@@ -15,16 +14,10 @@ const MenuPage: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<LocalMenuItem | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  // Updated to open popup instead of directly adding to cart
   const handleAddToCartClick = (product: LocalMenuItem): void => {
-    const cartItem: CartItem = {
-      _id: product.id.toString(), 
-      name: product.name,
-      price: parseFloat(product.price.replace(/[^0-9.]/g, '')) || 0, 
-      quantity: 1,
-      image: product.image 
-    };
-    
-    addToCart(cartItem);
+    setSelectedProduct(product);
+    setIsPopupOpen(true);
   };
 
   const handleClosePopup = (): void => {
@@ -38,6 +31,11 @@ const MenuPage: React.FC = () => {
 
   const handleNavigateToCart = (): void => {
     navigate('/cart');
+  };
+
+  const handleAddToCartFromPopup = (item: CartItem): void => {
+    addToCart(item);
+    handleClosePopup();
   };
 
   return (
@@ -57,17 +55,8 @@ const MenuPage: React.FC = () => {
       <AddToCartPopup 
         isOpen={isPopupOpen}
         onClose={handleClosePopup}
-        product={selectedProduct ? {
-          id: selectedProduct.id,
-          name: selectedProduct.name,
-          description: selectedProduct.description,
-          price: parseFloat(selectedProduct.price.replace(/[^0-9.]/g, '')) || 0,
-          image: selectedProduct.image
-        } : undefined}
-        onAddToCart={(item: CartItem) => {
-          addToCart(item);
-          handleClosePopup();
-        }}
+        product={selectedProduct}
+        onAddToCart={handleAddToCartFromPopup}
       />
     </div>
   );

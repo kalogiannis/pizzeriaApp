@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react'; 
@@ -18,22 +16,28 @@ interface MenuSideBarProps {
 const MenuSideBar: React.FC<MenuSideBarProps> = ({
   onAddToCart,
   searchQuery = '',
-  onNavigateToCart // Now used
+  onNavigateToCart 
 }) => {
   const [activeTab, setActiveTab] = useState<MenuCategory>("Προσφορές");
   const { cartItems } = useCart();
 
   const getCurrentItems = (): LocalMenuItem[] => {
-    let items = menuData[activeTab] || [];
+    const items = menuData[activeTab] || [];
+
+    // Add category to each item
+    const itemsWithCategory = items.map(item => ({
+      ...item,
+      category: activeTab
+    }));
 
     if (searchQuery.trim()) {
-      items = items.filter(item =>
+      return itemsWithCategory.filter(item =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
-    return items;
+    return itemsWithCategory;
   };
 
   const getCategoryIcon = (category: MenuCategory): string => {
@@ -50,7 +54,7 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
     return icons[category] || "📋";
   };
 
-  const getTotalCartItems = (): number => { // Now used
+  const getTotalCartItems = (): number => { 
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
@@ -167,7 +171,7 @@ const MenuSideBar: React.FC<MenuSideBarProps> = ({
                         className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm"
                         onClick={() => onAddToCart(item)}
                       >
-                        {typeof item.price === 'string' && item.price.includes('Επίλεξε') ? 'Επίλεξε' : 'Προσθήκη'}
+                        Επίλεξε
                       </Button>
                     </div>
                   </div>

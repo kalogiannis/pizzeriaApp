@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { toast } from 'sonner';
 import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
@@ -83,8 +81,20 @@ const ShoppingCartPage: React.FC = () => {
                       />
                       <div className="flex-1 min-w-0">
                         <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
+                        
+                        {/* Display selected options */}
+                        {item.selectedOptions && item.selectedOptions.length > 0 && (
+                          <div className="text-sm text-gray-600 mt-1">
+                            {item.selectedOptions.map((option, optionIndex) => (
+                              <span key={optionIndex} className="inline-block mr-2">
+                                {option.name} {option.price > 0 && `(+€${option.price.toFixed(2)})`}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        
                         <p className="text-lg font-bold text-green-600 mt-1">
-                          €{(item.price * item.quantity).toFixed(2)}
+                          €{(item.totalPrice || (item.price * item.quantity)).toFixed(2)}
                         </p>
                       </div>
                     </div>
