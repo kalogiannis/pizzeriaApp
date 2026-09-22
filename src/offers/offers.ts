@@ -1,4 +1,4 @@
-import img from '../assets/landing.png'
+import img from '../assets/landing.webp'
 export const offersArray= [
     {
         image:img,

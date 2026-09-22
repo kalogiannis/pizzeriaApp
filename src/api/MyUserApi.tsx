@@ -6,9 +6,7 @@ import type { User } from "@/types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL!;
 
-// ————————————————
 // Fetch current user
-// ————————————————
 export const useGetMyUser = () => {
   const { getAccessTokenSilently } = useAuth0();
 
@@ -21,7 +19,7 @@ export const useGetMyUser = () => {
     return res.json();
   };
 
-  const { data: currentUser, isLoading, error } = useQuery({
+  const { data: currentUser,isLoading, error } = useQuery({
     queryKey: ["currentUser"],
     queryFn: fetchCurrentUser,
   });
@@ -33,9 +31,7 @@ export const useGetMyUser = () => {
   return { currentUser, isLoading };
 };
 
-// ————————————————
 // Create new user
-// ————————————————
 type CreateUserRequest = { auth0Id: string; email: string };
 
 export const useCreateMyUser = () => {
@@ -56,7 +52,7 @@ export const useCreateMyUser = () => {
 
   const {
     mutateAsync: createUser,
-    isLoading: isCreating,
+    isPending: isCreating,
     isError: createError,
     isSuccess: createSuccess,
   } = useMutation({
@@ -73,9 +69,7 @@ export const useCreateMyUser = () => {
   return { createUser, isCreating, createError, createSuccess };
 };
 
-// ————————————————
 // Update existing user
-// ————————————————
 type UpdateMyUserRequest = {
   name: string;
   addressLine1: string;
@@ -102,7 +96,7 @@ export const useUpdateMyUser = () => {
 
   const {
     mutateAsync: updateUser,
-    isLoading: isUpdating,
+    isPending: isUpdating,
     isSuccess: updateSuccess,
     isError: updateError,
     reset: resetUpdate,

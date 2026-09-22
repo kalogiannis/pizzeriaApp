@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import  { useState, useMemo, useEffect } from 'react';
 import { Plus, Minus, ShoppingCart } from 'lucide-react';
 import {
   Dialog,
@@ -20,12 +20,12 @@ interface AddToCartPopupProps {
   onAddToCart?: (item: CartItem) => void;
 }
 
-const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
+const AddToCartPopup= ({
   isOpen,
   onClose,
   product,
   onAddToCart
-}) => {
+}: AddToCartPopupProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedOptions, setSelectedOptions] = useState<{ [groupId: string]: string[] }>({});
 
@@ -189,7 +189,7 @@ const AddToCartPopup: React.FC<AddToCartPopupProps> = ({
   }, [product]);
 
   // Initialize selected options with default values
-  React.useEffect(() => {
+  useEffect(() => {
     const initialSelections: { [groupId: string]: string[] } = {};
     
     optionGroups.forEach(group => {

@@ -1,10 +1,9 @@
-
 import { Link } from "react-router-dom";
 import MobileNav from "./MobileNav";
 import MainNav from "./MainNav";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/contexts/useCart";
-
+import { ThemeToggle } from "@/components/ThemeToggle"; 
 const Header = () => {
   const { cartItems } = useCart();
 
@@ -19,9 +18,10 @@ const Header = () => {
           to="/"
           className="text-3xl font-bold tracking-tight text-orange-500"
         >
-          MernEats.com
+          Pizzaro.com
         </Link>
         <div className="flex items-center space-x-6">
+          <ThemeToggle />
           <Link
             to="/menu"
             className="text-xl font-bold tracking-tight text-orange-500"

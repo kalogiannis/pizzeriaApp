@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MenuSideBar from '@/components/MenuSideBar';
 import AddToCartPopup from '@/components/AddToCartPopup';
@@ -7,14 +7,13 @@ import { useCart } from '@/contexts/useCart';
 import type { LocalMenuItem, CartItem } from '../types';
 import type { SearchForm } from '@/components/SearchBar';
 
-const MenuPage: React.FC = () => {
+const MenuPage = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<LocalMenuItem | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // Updated to open popup instead of directly adding to cart
   const handleAddToCartClick = (product: LocalMenuItem): void => {
     setSelectedProduct(product);
     setIsPopupOpen(true);
@@ -29,6 +28,11 @@ const MenuPage: React.FC = () => {
     setSearchQuery(data.searchQuery);
   };
 
+  // Resets search state in parent
+  const handleResetSearch = (): void => {
+    setSearchQuery('');
+  };
+
   const handleNavigateToCart = (): void => {
     navigate('/cart');
   };
@@ -39,15 +43,21 @@ const MenuPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="bg-white shadow-sm border-b p-4">
-        <SearchBar onSubmit={handleSearch} placeHolder="Search menu..." />
+    <div className="flex flex-col min-h-screen bg-background text-foreground transition-colors">
+      <div className="bg-card border-b border-border p-4 shadow-sm">
+        <SearchBar 
+          onSubmit={handleSearch} 
+          onReset={handleResetSearch}
+          searchQuery={searchQuery}
+          placeHolder="Search menu..." 
+        />
       </div>
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex flex-col w-full">
         <MenuSideBar 
           onAddToCart={handleAddToCartClick}
           searchQuery={searchQuery}
+          onResetSearch={handleResetSearch}
           onNavigateToCart={handleNavigateToCart}
         />
       </div>

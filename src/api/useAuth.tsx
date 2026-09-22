@@ -13,8 +13,8 @@ export const useAuth = () => {
 
   return {
     isAuthenticated,
-    user,               // Auth0 profile object
-    isLoading,          // Auth0 initialization flag
+    user,               
+    isLoading,          
     login: () => loginWithRedirect(),
     logout: () =>
   logout({

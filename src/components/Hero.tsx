@@ -1,15 +1,11 @@
-
-
-import React from "react";
-import hero from "../assets/pizza.png";
+import hero from "../assets/pizza.webp";
 import Example from "./Example";
 import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
     <section
-      className="relative w-full"
-  
+      className="relative w-full overflow-hidden" // FIX: Added overflow-hidden
       style={{ minHeight: "320px" }}
     >
       <div className="relative w-full h-[320px] sm:h-[420px] md:h-[480px] lg:h-[600px] overflow-hidden">

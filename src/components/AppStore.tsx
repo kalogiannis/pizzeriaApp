@@ -1,4 +1,4 @@
-import landingImage from "../assets/landing.png";
+import landingImage from "../assets/landing.webp";
 import appDownloadImage from "../assets/appDownload.png";
 
 const AppStore = () => {
@@ -10,7 +10,7 @@ const AppStore = () => {
             Order takeaway even faster!
           </span>
           <span>
-            Download the MernEats App for faster ordering and personalised
+            Download the Pizzaros App for faster ordering and personalised
             recommendations
           </span>
           <img src={appDownloadImage} />

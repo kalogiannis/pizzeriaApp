@@ -9,5 +9,4 @@ export const pizzeriaList: MenuCategory[] = [
   "Vegan",
   "Ζυμαρικά",
   "Ποτά",
-  "Πίτσες",
 ];

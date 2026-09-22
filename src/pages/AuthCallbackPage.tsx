@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { useAuth } from "@/api/useAuth";
 import { useNavigate } from "react-router-dom";
 
-const AuthCallbackPage: React.FC = () => {
+const AuthCallbackPage = () => {
   const { isLoading } = useAuth();
   const navigate = useNavigate();
 

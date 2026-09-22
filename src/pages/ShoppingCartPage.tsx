@@ -1,17 +1,16 @@
-import React from 'react';
+
 import { toast } from 'sonner';
 import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '../contexts/useCart';
 import type { CartItem } from '../types';
 
-const ShoppingCartPage: React.FC = () => {
+const ShoppingCartPage = () => {
   const { cartItems, removeFromCart, addToCart, clearCart, totalAmount } = useCart();
 
   const handleQuantityChange = (item: CartItem, change: number): void => {
     const newQuantity = item.quantity + change;
     if (newQuantity > 0) {
-
       const updatedItem = { ...item, quantity: newQuantity };
       removeFromCart(item._id); 
       addToCart(updatedItem); 
@@ -21,14 +20,14 @@ const ShoppingCartPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-background text-foreground py-8 transition-colors">
       <div className="max-w-4xl mx-auto px-4">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div className="bg-card border border-border rounded-lg shadow-sm p-6 mb-6">
           <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start">
             <div className="flex items-center space-x-3 mb-4 sm:mb-0">
-              <ShoppingCart size={32} className="text-green-600" />
-              <h1 className="text-3xl font-bold text-gray-800">Καλάθι Αγορών</h1>
+              <ShoppingCart size={32} className="text-green-600 dark:text-green-500" />
+              <h1 className="text-3xl font-bold text-foreground">Καλάθι Αγορών</h1>
             </div>
             {cartItems.length > 0 && (
               <Button
@@ -37,7 +36,7 @@ const ShoppingCartPage: React.FC = () => {
                   toast.success("Cart cleared successfully!");
                 }}
                 variant="outline"
-                className="text-red-600 border-red-600 hover:bg-red-50 w-full sm:w-auto"
+                className="text-red-600 border-red-600 hover:bg-red-500/10 dark:text-red-400 dark:border-red-400 w-full sm:w-auto"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Καθαρισμός Καλαθιού
@@ -47,19 +46,19 @@ const ShoppingCartPage: React.FC = () => {
         </div>
 
         {/* Cart Content */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-card border border-border rounded-lg shadow-sm p-6">
           {cartItems.length === 0 ? (
             <div className="text-center py-12">
-              <ShoppingCart size={64} className="mx-auto text-gray-400 mb-4" />
-              <h2 className="text-2xl font-semibold text-gray-600 mb-2">
+              <ShoppingCart size={64} className="mx-auto text-muted-foreground mb-4" />
+              <h2 className="text-2xl font-semibold text-foreground mb-2">
                 Το καλάθι σας είναι άδειο
               </h2>
-              <p className="text-gray-500 mb-6">
+              <p className="text-muted-foreground mb-6">
                 Προσθέστε προϊόντα από το μενού για να ξεκινήσετε την παραγγελία σας
               </p>
               <Button 
                 onClick={() => window.history.back()}
-                className="bg-green-600 hover:bg-green-700"
+                className="bg-green-600 hover:bg-green-700 text-white"
               >
                 Επιστροφή στο Μενού
               </Button>
@@ -71,7 +70,7 @@ const ShoppingCartPage: React.FC = () => {
                 {cartItems.map((item: CartItem, index: number) => (
                   <div 
                     key={`${item._id}-${index}`} 
-                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b pb-4 last:border-b-0"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-border pb-4 last:border-b-0"
                   >
                     <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                       <img 
@@ -80,11 +79,10 @@ const ShoppingCartPage: React.FC = () => {
                         className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
                       />
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
+                        <h3 className="text-lg font-semibold text-foreground">{item.name}</h3>
                         
-                        {/* Display selected options */}
                         {item.selectedOptions && item.selectedOptions.length > 0 && (
-                          <div className="text-sm text-gray-600 mt-1">
+                          <div className="text-sm text-muted-foreground mt-1">
                             {item.selectedOptions.map((option, optionIndex) => (
                               <span key={optionIndex} className="inline-block mr-2">
                                 {option.name} {option.price > 0 && `(+€${option.price.toFixed(2)})`}
@@ -93,14 +91,13 @@ const ShoppingCartPage: React.FC = () => {
                           </div>
                         )}
                         
-                        <p className="text-lg font-bold text-green-600 mt-1">
+                        <p className="text-lg font-bold text-green-600 dark:text-green-400 mt-1">
                           €{(item.totalPrice || (item.price * item.quantity)).toFixed(2)}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 mt-4 sm:mt-0">
-                      {/* Quantity Controls */}
                       <div className="flex items-center space-x-2">
                         <Button
                           variant="outline"
@@ -110,7 +107,7 @@ const ShoppingCartPage: React.FC = () => {
                         >
                           <Minus className="h-4 w-4" />
                         </Button>
-                        <span className="font-medium text-lg min-w-[2rem] text-center">
+                        <span className="font-medium text-lg min-w-[2rem] text-center text-foreground">
                           {item.quantity}
                         </span>
                         <Button
@@ -123,7 +120,6 @@ const ShoppingCartPage: React.FC = () => {
                         </Button>
                       </div>
 
-                      {/* Remove Button */}
                       <Button
                         variant="outline"
                         size="icon"
@@ -131,7 +127,7 @@ const ShoppingCartPage: React.FC = () => {
                           removeFromCart(item._id);
                           toast.success(`${item.name} removed from cart`);
                         }}
-                        className="h-8 w-8 text-red-600 border-red-600 hover:bg-red-50"
+                        className="h-8 w-8 text-red-600 border-red-600 hover:bg-red-500/10 dark:text-red-400 dark:border-red-400"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -141,20 +137,19 @@ const ShoppingCartPage: React.FC = () => {
               </div>
 
               {/* Order Summary */}
-              <div className="border-t pt-6">
-                <div className="bg-gray-50 rounded-lg p-4">
+              <div className="border-t border-border pt-6">
+                <div className="bg-muted/50 rounded-lg p-4 border border-border">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-lg text-gray-600">Συνολικά Προϊόντα:</span>
-                    <span className="text-lg font-semibold">{cartItems.length}</span>
+                    <span className="text-lg text-muted-foreground">Συνολικά Προϊόντα:</span>
+                    <span className="text-lg font-semibold text-foreground">{cartItems.length}</span>
                   </div>
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-xl font-bold text-gray-800">Σύνολο Πληρωμής:</span>
-                    <span className="text-xl font-bold text-green-600">
+                    <span className="text-xl font-bold text-foreground">Σύνολο Πληρωμής:</span>
+                    <span className="text-xl font-bold text-green-600 dark:text-green-400">
                       €{totalAmount.toFixed(2)}
                     </span>
                   </div>
                   
-                  {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4 mt-4">
                     <Button
                       onClick={() => window.history.back()}
@@ -164,7 +159,7 @@ const ShoppingCartPage: React.FC = () => {
                       Συνέχεια Αγορών
                     </Button>
                     <Button
-                      className="flex-1 bg-green-600 hover:bg-green-700"
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                       size="lg"
                     >
                       Προχώρηση στην Πληρωμή

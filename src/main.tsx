@@ -7,6 +7,7 @@ import Auth0ProviderWithNavigate from "./auth/Auth0ProviderWithNavigate";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { CartProvider } from "./contexts/CartContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,14 +21,16 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Router>
       <QueryClientProvider client={queryClient}>
-        <Auth0ProviderWithNavigate>
-          <CartProvider>
-            <AppRoutes />
-          </CartProvider>
+        <ThemeProvider>
+          <Auth0ProviderWithNavigate>
+            <CartProvider>
+              <AppRoutes />
+            </CartProvider>
 
-          <Toaster visibleToasts={1} position="top-right" richColors />
-        </Auth0ProviderWithNavigate>
+            <Toaster visibleToasts={1} position="top-right" richColors />
+          </Auth0ProviderWithNavigate>
+        </ThemeProvider>
       </QueryClientProvider>
     </Router>
-  </StrictMode>
+  </StrictMode>,
 );

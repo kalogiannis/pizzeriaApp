@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import  { useReducer, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { CartContext } from './cart-context-definition';
 import type { CartItem } from '../types';
@@ -65,7 +65,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
   }
 };
 
-export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
+export const CartProvider = ({ children }: CartProviderProps) => {
   const [state, dispatch] = useReducer(cartReducer, { cartItems: [] }, (initialState) => {
     const storedCartItems = sessionStorage.getItem('cartItems');
     return storedCartItems ? { cartItems: JSON.parse(storedCartItems) } : initialState;
@@ -88,7 +88,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   };
 
   const totalAmount = state.cartItems.reduce((total: number, item: CartItem) => {
-    // Use totalPrice if available (includes options), otherwise use base price * quantity
     const itemTotal = item.totalPrice || (item.price * item.quantity);
     return total + itemTotal;
   }, 0);
