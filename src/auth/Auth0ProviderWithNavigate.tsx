@@ -11,7 +11,9 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
   const domain = import.meta.env.VITE_AUTH0_DOMAIN;
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
   const redirectUri = import.meta.env.VITE_AUTH0_CALLBACK_URL;
-  const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
+  // Environment values can contain accidental whitespace, which would make
+  // the access token audience different from the API's configured audience.
+  const audience = import.meta.env.VITE_AUTH0_AUDIENCE?.trim();
 
   if (!domain || !clientId || !redirectUri || !audience) {
     throw new Error("unable to initialise auth");
@@ -24,6 +26,8 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
     <Auth0Provider
       domain={domain}
       clientId={clientId}
+      // The default in-memory cache is cleared on a full-page refresh.
+      cacheLocation="localstorage"
       authorizationParams={{
         redirect_uri: redirectUri,
         audience

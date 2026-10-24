@@ -1,9 +1,7 @@
-// src/auth/ProtectedRoute.tsx
-import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/api/useAuth";
 
-const ProtectedRoute: React.FC = () => {
+const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuth();
 
   // While Auth0 is bootstrapping, show nothing (or a spinner)

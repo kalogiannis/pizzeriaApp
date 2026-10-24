@@ -1,5 +1,6 @@
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import MenuSideBar from '@/components/MenuSideBar';
 import AddToCartPopup from '@/components/AddToCartPopup';
 import SearchBar from '@/components/SearchBar';
@@ -12,11 +13,17 @@ const MenuPage = () => {
   const { addToCart } = useCart();
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<LocalMenuItem | null>(null);
+  const [popupQuantity, setPopupQuantity] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleAddToCartClick = (product: LocalMenuItem): void => {
+    setPopupQuantity(1);
     setSelectedProduct(product);
     setIsPopupOpen(true);
+  };
+
+  const handlePopupQuantityChange = (nextQuantity: number): void => {
+    setPopupQuantity(Math.max(1, nextQuantity));
   };
 
   const handleClosePopup = (): void => {
@@ -28,7 +35,6 @@ const MenuPage = () => {
     setSearchQuery(data.searchQuery);
   };
 
-  // Resets search state in parent
   const handleResetSearch = (): void => {
     setSearchQuery('');
   };
@@ -40,6 +46,7 @@ const MenuPage = () => {
   const handleAddToCartFromPopup = (item: CartItem): void => {
     addToCart(item);
     handleClosePopup();
+    toast.success(`${item.name} προστέθηκε στο καλάθι.`);
   };
 
   return (
@@ -62,11 +69,14 @@ const MenuPage = () => {
         />
       </div>
 
-      <AddToCartPopup 
+      <AddToCartPopup
+        key={selectedProduct?.id ?? "no-product"}
         isOpen={isPopupOpen}
         onClose={handleClosePopup}
         product={selectedProduct}
         onAddToCart={handleAddToCartFromPopup}
+        quantity={popupQuantity}
+        onQuantityChange={handlePopupQuantityChange}
       />
     </div>
   );

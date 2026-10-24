@@ -6,7 +6,6 @@ const AuthCallbackPage = () => {
   const { isLoading } = useAuth();
   const navigate = useNavigate();
 
-  // Once Auth0 finishes its redirect processing, go home
   useEffect(() => {
     if (!isLoading) {
       navigate("/", { replace: true });

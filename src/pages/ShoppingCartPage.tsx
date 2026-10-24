@@ -1,12 +1,25 @@
-
 import { toast } from 'sonner';
 import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useCart } from '../contexts/useCart';
 import type { CartItem } from '../types';
+import { createLocalOrder } from '@/lib/orders';
 
 const ShoppingCartPage = () => {
   const { cartItems, removeFromCart, addToCart, clearCart, totalAmount } = useCart();
+  const { user } = useAuth0();
+  const navigate = useNavigate();
+
+  const handlePayment = () => {
+    if (cartItems.length === 0) return;
+
+    const order = createLocalOrder(cartItems, user?.email ?? 'guest');
+    clearCart();
+    toast.success('Η πληρωμή ολοκληρώθηκε επιτυχώς!');
+    navigate('/order-confirmation', { state: { orderId: order.id } });
+  };
 
   const handleQuantityChange = (item: CartItem, change: number): void => {
     const newQuantity = item.quantity + change;
@@ -159,6 +172,7 @@ const ShoppingCartPage = () => {
                       Συνέχεια Αγορών
                     </Button>
                     <Button
+                      onClick={handlePayment}
                       className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                       size="lg"
                     >

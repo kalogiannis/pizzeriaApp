@@ -13,7 +13,7 @@ import { AspectRatio } from "./ui/aspect-ratio";
 const Offers = () => {
   return (
     <div>
-      <h2>Prosofres</h2>
+      <h2 className="mb-3">Προσφορές</h2>
 
       <div className="grid md:grid-cols-[2fr_2fr] lg:grid-cols-[2fr_2fr_2fr_2fr] gap-3">
         {offersArray.map((item, index) => (

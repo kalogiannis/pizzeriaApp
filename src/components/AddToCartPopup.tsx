@@ -11,25 +11,27 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import type { LocalMenuItem, CartItem, OptionGroup } from '../types'; // Removed 'Option'
+import type { LocalMenuItem, CartItem, OptionGroup } from '../types'; 
 
 interface AddToCartPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  product?: LocalMenuItem | null; // Changed to accept null
+  product?: LocalMenuItem | null; 
   onAddToCart?: (item: CartItem) => void;
+  quantity: number;
+  onQuantityChange: (quantity: number) => void;
 }
 
 const AddToCartPopup= ({
   isOpen,
   onClose,
   product,
-  onAddToCart
+  onAddToCart,
+  quantity,
+  onQuantityChange,
 }: AddToCartPopupProps) => {
-  const [quantity, setQuantity] = useState<number>(1);
   const [selectedOptions, setSelectedOptions] = useState<{ [groupId: string]: string[] }>({});
 
-  // Generate options based on product category
   const optionGroups = useMemo((): OptionGroup[] => {
     if (!product) return [];
 
@@ -184,17 +186,15 @@ const AddToCartPopup= ({
 
       case 'Παγωτά':
       default:
-        return []; // No options for ice cream, just quantity
+        return []; 
     }
   }, [product]);
 
-  // Initialize selected options with default values
   useEffect(() => {
     const initialSelections: { [groupId: string]: string[] } = {};
     
     optionGroups.forEach(group => {
       if (group.type === 'radio' && group.min && group.min > 0) {
-        // For radio groups with minimum requirements, select the first option by default
         initialSelections[group.id] = [group.options[0].id];
       } else {
         initialSelections[group.id] = [];
@@ -207,7 +207,7 @@ const AddToCartPopup= ({
   const handleQuantityChange = (change: number): void => {
     const newQuantity = quantity + change;
     if (newQuantity >= 1) {
-      setQuantity(newQuantity);
+      onQuantityChange(newQuantity);
     }
   };
 
